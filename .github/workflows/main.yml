@@ -108,7 +108,7 @@ jobs:
             IMAGE_NAME="${{env.DOCKER_DOCKERHUB_USERNAME}}/${{env.PLATFORM}}_${{env.CURRENT_BRANCH}}_${{env.TARGET_COLOR}}"
             
 #            docker pull /$IMAGE_NAME:latest
-            docker pull "otisaws/react_prod_blue":latest
+            docker pull otisaws/react_prod_blue
             # 포트와 컨테이너 이름 지정하여 실행
 
 #            docker run -d \
