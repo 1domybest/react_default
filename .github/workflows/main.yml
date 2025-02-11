@@ -92,7 +92,7 @@ jobs:
           IMAGE_NAME="${{env.DOCKER_DOCKERHUB_USERNAME}}/${{env.PLATFORM}}_${{env.CURRENT_BRANCH}}_${{env.TARGET_COLOR}}"
           docker build --platform linux/amd64 \
             --build-arg COLOR=$TARGET_COLOR \
-            -t $IMAGE_NAME:latest ./nginx/Dockerfile
+            -f ./nginx/Dockerfile -t $IMAGE_NAME:latest .
           docker push $IMAGE_NAME:latest
 
       # SSH 접속해서 docker compose 실행
