@@ -105,7 +105,7 @@ jobs:
           key: ${{ env.EC2_SSH_KEY }}
           script_stop: true
           script: |
-            # Docker 로그인
+            
             echo ${{ secrets.DOCKER_TOKEN }} | docker login --username ${{ env.DOCKER_DOCKERHUB_USERNAME }} --password-stdin        
                     
             IMAGE_NAME="${{env.DOCKER_DOCKERHUB_USERNAME}}/${{env.PLATFORM}}_${{env.CURRENT_BRANCH}}_${{env.TARGET_COLOR}}"
