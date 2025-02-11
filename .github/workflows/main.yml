@@ -3,8 +3,8 @@ name: CI
 env:
   SERVER_IP: ${{ secrets.REACT_DOCKER_IP }}
   EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
-  DOCKER_DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-  DOCKER_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+  DOCKER_DOCKERHUB_USERNAME: ${{ secrets.DOCKER_DOCKERHUB_USERNAME }}
+  DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
 
   PLATFORM: "react"
   BLUE: "blue"
