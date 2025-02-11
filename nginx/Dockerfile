@@ -11,9 +11,8 @@ RUN if [ ! -f /etc/nginx/conf.d/react_service_env.inc ]; then \
 
 # 3. 기본 Nginx 설정 파일 복사
 COPY default.conf /etc/nginx/conf.d/default.conf
-
 # 4. GitHub Actions에서 빌드한 결과물 /app/dist를 Nginx 서빙 디렉토리로 복사
-COPY dist /usr/share/nginx/html
+COPY ../dist /usr/share/nginx/html
 
 # 5. Nginx 실행
 CMD ["nginx", "-g", "daemon off;"]
