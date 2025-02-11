@@ -104,8 +104,7 @@ jobs:
           host: ${{ env.SERVER_IP }}
           key: ${{ env.EC2_SSH_KEY }}
           script_stop: true
-          script: |      
-                    
+          script: |       
             IMAGE_NAME="${{env.DOCKER_DOCKERHUB_USERNAME}}/${{env.PLATFORM}}_${{env.CURRENT_BRANCH}}_${{env.TARGET_COLOR}}"
             
             docker pull $IMAGE_NAME:latest
