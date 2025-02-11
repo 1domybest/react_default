@@ -1,6 +1,7 @@
 name: CI
 
 env:
+  SERVER_USERNAME: ${{ secrets.SERVER_USERNAME }}
   SERVER_IP: ${{ secrets.REACT_DOCKER_IP }}
   EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
   DOCKER_DOCKERHUB_USERNAME: ${{ secrets.DOCKER_DOCKERHUB_USERNAME }}
@@ -99,7 +100,7 @@ jobs:
       - name: Deploy with Docker Compose
         uses: appleboy/ssh-action@master
         with:
-          username: ubuntu
+          username: ${{ env.SERVER_USERNAME }}
           host: ${{ env.SERVER_IP }}
           key: ${{ env.EC2_SSH_KEY }}
           script_stop: true
@@ -128,7 +129,7 @@ jobs:
       - name: Change nginx upstream
         uses: appleboy/ssh-action@master
         with:
-          username: ubuntu
+          username: ${{ env.SERVER_USERNAME }}
           host: ${{ env.SERVER_IP }}
           key: ${{ env.EC2_SSH_KEY }}
           script_stop: true
@@ -140,7 +141,7 @@ jobs:
       - name: Stop previous server
         uses: appleboy/ssh-action@master
         with:
-          username: ubuntu
+          username: ${{ env.SERVER_USERNAME }}
           host: ${{ env.SERVER_IP }}
           key: ${{ env.EC2_SSH_KEY }}
           script_stop: true
