@@ -43,13 +43,6 @@ jobs:
   
           if [[ "$status_code" -eq 200 ]]; then
             echo "✅ 서버가 정상 응답함 (200 OK)"
-          elif [[ "$status_code" -ge 400 ]]; then
-            echo "❌ 오류 발생! (Status: $status_code)"
-          else
-            echo "⚠️ 예상치 못한 상태 코드: $status_code"
-          fi
-          
-          if response=$(curl -s --fail http://${{env.SERVER_IP}}:${{env.REACT_HC_PORT}}/env); then
             CURRENT_COLOR=$(echo "$response" | xargs)
             echo "CURRENT_COLOR=$CURRENT_COLOR" >> $GITHUB_ENV
             echo "현재 컬러 = $CURRENT_COLOR"
@@ -66,8 +59,9 @@ jobs:
               echo "CURRENT_PORT=3" >> $GITHUB_ENV
               echo "TARGET_PORT=unknown" >> $GITHUB_ENV
             fi
-          
           else
+            echo "⚠️ 예상치 못한 상태 코드: $status_code"
+          
             echo "Curl request failed or returned empty, setting CURRENT_COLOR to GREEN"
             echo "CURRENT_COLOR=$GREEN" >> $GITHUB_ENV
             echo "CURRENT_PORT=$GREEN_PORT" >> $GITHUB_ENV
