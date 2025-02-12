@@ -13,6 +13,8 @@ env:
   BLUE_PORT: 3000
   GREEN_PORT: 3001
   REACT_HC_PORT: 80
+#  CURRENT_PORT: BLUE_PORT
+#  TARGET_PORT: GREEN_PORT
 
 on:
   push:
@@ -45,13 +47,8 @@ jobs:
             echo "CURRENT_COLOR=$GREEN" >> $GITHUB_ENV
             echo "CURRENT_PORT=$GREEN_PORT" >> $GITHUB_ENV
             echo "TARGET_COLOR=$BLUE" >> $GITHUB_ENV
-            echo "TARGET_PORT=${{env.BLUE_PORT}}" >> $GITHUB_ENV
+            echo "TARGET_PORT=$BLUE_PORT" >> $GITHUB_ENV
             echo "열려있는 서버가 없기에 디폴트 컬러 BLUE로 실행"
-            # 변수들이 잘 설정되었는지 확인하는 echo 추가
-            echo "CURRENT_COLOR=$GREEN"
-            echo "CURRENT_PORT=$GREEN_PORT"
-            echo "TARGET_COLOR=$BLUE"
-            echo "TARGET_PORT=$BLUE_PORT"
           else
             CURRENT_COLOR=$(echo "$response" | xargs)
             echo "CURRENT_COLOR=$CURRENT_COLOR" >> $GITHUB_ENV
@@ -70,6 +67,13 @@ jobs:
             echo "CURRENT_PORT=unknown" >> $GITHUB_ENV
             echo "TARGET_PORT=unknown" >> $GITHUB_ENV
           fi
+
+      - name: Verify environment variables
+        run: |
+          echo "CURRENT_COLOR=${{ env.CURRENT_COLOR }}"
+          echo "CURRENT_PORT=${{ env.CURRENT_PORT }}"
+          echo "TARGET_COLOR=${{ env.TARGET_COLOR }}"
+          echo "TARGET_PORT=${{ env.TARGET_PORT }}"
 
       # Node.js 설치
       - name: Install Node.js 22.13.0
