@@ -39,6 +39,16 @@ jobs:
       # 현재 열린 서버 확인
       - name: Fetch container name from Nginx
         run: |
+          status_code=$(curl -s -o /dev/null -w "%{http_code}" http://${{env.SERVER_IP}}:${{env.REACT_HC_PORT}}/env)
+  
+          if [[ "$status_code" -eq 200 ]]; then
+            echo "✅ 서버가 정상 응답함 (200 OK)"
+          elif [[ "$status_code" -ge 400 ]]; then
+            echo "❌ 오류 발생! (Status: $status_code)"
+          else
+            echo "⚠️ 예상치 못한 상태 코드: $status_code"
+          fi
+          
           if response=$(curl -s --fail http://${{env.SERVER_IP}}:${{env.REACT_HC_PORT}}/env); then
             CURRENT_COLOR=$(echo "$response" | xargs)
             echo "CURRENT_COLOR=$CURRENT_COLOR" >> $GITHUB_ENV
