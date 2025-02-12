@@ -162,7 +162,7 @@ jobs:
           key: ${{ env.EC2_SSH_KEY }}
           script_stop: true
           script: |
-            sudo echo "set \$react_service_url ${{env.PLATFORM}}_${{env.CURRENT_BRANCH}}_${{env.TARGET_COLOR}};" | docker exec -i main_nginx tee /etc/nginx/sites-available/seoktae8.duckdns.org/config/frontend/react_service_env.inc
+            echo "set \$react_service_url ${{env.PLATFORM}}_${{env.CURRENT_BRANCH}}_${{env.TARGET_COLOR}};" | sudo docker exec -i main_nginx tee /etc/nginx/sites-available/seoktae8.duckdns.org/config/frontend/react_service_env.inc
             sudo docker exec -i main_nginx nginx -s reload
 
       # 기존 서버 중지
