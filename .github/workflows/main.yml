@@ -105,6 +105,8 @@ jobs:
           key: ${{ env.EC2_SSH_KEY }}
           script_stop: true
           script: |
+            echo "TARGET_PORT is $TARGET_PORT"
+            echo "TARGET_PORT is ${{env.TARGET_PORT}}"
             IMAGE_NAME="${{env.DOCKER_DOCKERHUB_USERNAME}}/${{env.PLATFORM}}_${{env.CURRENT_BRANCH}}_${{env.TARGET_COLOR}}"
             TARGET_PORT="${{env.TARGET_PORT}}"
                     
