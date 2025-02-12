@@ -106,9 +106,11 @@ jobs:
           script_stop: true
           script: |
             DOCKER_DOCKERHUB_USERNAME = "${{env.DOCKER_DOCKERHUB_USERNAME}}"
+            DOCKER_TOKEN = "${{env.DOCKER_TOKEN}}"
             IMAGE_NAME="${{env.PLATFORM}}_${{env.CURRENT_BRANCH}}_${{env.TARGET_COLOR}}"
             TARGET_PORT="${{env.TARGET_PORT}}"
             
+            echo $DOCKER_TOKEN | sudo docker login --username $DOCKER_DOCKERHUB_USERNAME --password-stdin
             
             echo "IMAGE_NAME=$IMAGE_NAME"
             echo "TARGET_PORT=$TARGET_PORT"
