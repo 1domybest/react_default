@@ -55,6 +55,8 @@ jobs:
             else
               echo "CURRENT_PORT=3" >> $GITHUB_ENV
               echo "TARGET_PORT=unknown" >> $GITHUB_ENV
+            fi
+          
           else
             echo "Curl request failed or returned empty, setting CURRENT_COLOR to GREEN"
             echo "CURRENT_COLOR=$GREEN" >> $GITHUB_ENV
