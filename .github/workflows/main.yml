@@ -64,8 +64,8 @@ jobs:
             echo "TARGET_PORT=$BLUE_PORT" >> $GITHUB_ENV
             echo "TARGET_COLOR=$BLUE" >> $GITHUB_ENV
           else
-            echo "CURRENT_PORT=unknown" >> $GITHUB_ENV
-            echo "TARGET_PORT=unknown" >> $GITHUB_ENV
+            echo "CURRENT_PORT=3330" >> $GITHUB_ENV
+            echo "TARGET_PORT=2000" >> $GITHUB_ENV
           fi
 
       - name: Verify environment variables
