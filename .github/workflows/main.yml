@@ -113,7 +113,7 @@ jobs:
             echo "IMAGE_NAME=$IMAGE_NAME"
             echo "TARGET_PORT=$TARGET_PORT"
             
-            sudo docker pull "$DOCKER_DOCKERHUB_USERNAME/$IMAGE_NAME"
+            sudo docker pull "${{env.DOCKER_DOCKERHUB_USERNAME}}/${{env.PLATFORM}}_${{env.CURRENT_BRANCH}}_${{env.TARGET_COLOR}}"
       
             sudo docker run -d \
             --name "$IMAGE_NAME" \
