@@ -105,7 +105,6 @@ jobs:
           key: ${{ env.EC2_SSH_KEY }}
           script_stop: true
           script: |
-
             sudo docker run -d \
             --name "${{env.PLATFORM}}_${{env.CURRENT_BRANCH}}_${{env.TARGET_COLOR}}" \
             -p "${{env.TARGET_PORT}}":80 \
