@@ -53,20 +53,22 @@ jobs:
             CURRENT_COLOR=$(echo "$response" | xargs)
             echo "CURRENT_COLOR=$CURRENT_COLOR" >> $GITHUB_ENV
             echo "현재 컬러 = $CURRENT_COLOR"
+          
+            if [ "$CURRENT_COLOR" = "$BLUE" ]; then
+              echo "CURRENT_PORT=$BLUE_PORT" >> $GITHUB_ENV
+              echo "TARGET_PORT=$GREEN_PORT" >> $GITHUB_ENV
+              echo "TARGET_COLOR=$GREEN" >> $GITHUB_ENV
+            elif [ "$CURRENT_COLOR" = "$GREEN" ]; then
+              echo "CURRENT_PORT=$GREEN_PORT" >> $GITHUB_ENV
+              echo "TARGET_PORT=$BLUE_PORT" >> $GITHUB_ENV
+              echo "TARGET_COLOR=$BLUE" >> $GITHUB_ENV
+            else
+              echo "CURRENT_PORT=3" >> $GITHUB_ENV
+              echo "TARGET_PORT=unknown" >> $GITHUB_ENV
+            fi
           fi
 
-          if [ "$CURRENT_COLOR" = "$BLUE" ]; then
-            echo "CURRENT_PORT=$BLUE_PORT" >> $GITHUB_ENV
-            echo "TARGET_PORT=$GREEN_PORT" >> $GITHUB_ENV
-            echo "TARGET_COLOR=$GREEN" >> $GITHUB_ENV
-          elif [ "$CURRENT_COLOR" = "$GREEN" ]; then
-            echo "CURRENT_PORT=$GREEN_PORT" >> $GITHUB_ENV
-            echo "TARGET_PORT=$BLUE_PORT" >> $GITHUB_ENV
-            echo "TARGET_COLOR=$BLUE" >> $GITHUB_ENV
-          else
-            echo "CURRENT_PORT=3330" >> $GITHUB_ENV
-            echo "TARGET_PORT=2000" >> $GITHUB_ENV
-          fi
+    
 
       - name: Verify environment variables
         run: |
