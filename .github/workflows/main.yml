@@ -62,8 +62,9 @@ jobs:
             echo "TARGET_COLOR=$BLUE" >> $GITHUB_ENV
             echo "TARGET_PORT=$BLUE_PORT" >> $GITHUB_ENV
             echo "열려있는 서버가 없기에 디폴트 컬러 BLUE로 실행"
+          fi
           
-          
+
 #          response=$(curl -s --fail http://${{env.SERVER_IP}}:${{env.REACT_HC_PORT}}/env || true)
 #          if [ $? -ne 0 ] || [ -z "$response" ]; then
 #            echo "Curl request failed or returned empty, setting CURRENT_COLOR to GREEN"
