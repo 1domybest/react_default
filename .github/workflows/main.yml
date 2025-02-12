@@ -39,32 +39,37 @@ jobs:
       - name: Fetch container name from Nginx
         run: |
           response=$(curl -s --fail http://${{env.SERVER_IP}}:${{env.REACT_HC_PORT}}/env || true)
-
-          if [ $? -ne 0 ] || [ -z "$response" ]; then
-            echo "Curl request failed or returned empty, setting CURRENT_COLOR to GREEN"
-            echo "CURRENT_COLOR=$GREEN" >> $GITHUB_ENV
-            echo "CURRENT_PORT=$GREEN_PORT" >> $GITHUB_ENV
-            echo "TARGET_COLOR=$BLUE" >> $GITHUB_ENV
-            echo "TARGET_PORT=$BLUE_PORT" >> $GITHUB_ENV
-            echo "열려있는 서버가 없기에 디폴트 컬러 BLUE로 실행"
-          else
-            CURRENT_COLOR=$(echo "$response" | xargs)
-            echo "CURRENT_COLOR=$CURRENT_COLOR" >> $GITHUB_ENV
-            echo "현재 컬러 = $CURRENT_COLOR"
-          
-            if [ "$CURRENT_COLOR" = "$BLUE" ]; then
-              echo "CURRENT_PORT=$BLUE_PORT" >> $GITHUB_ENV
-              echo "TARGET_PORT=$GREEN_PORT" >> $GITHUB_ENV
-              echo "TARGET_COLOR=$GREEN" >> $GITHUB_ENV
-            elif [ "$CURRENT_COLOR" = "$GREEN" ]; then
-              echo "CURRENT_PORT=$GREEN_PORT" >> $GITHUB_ENV
-              echo "TARGET_PORT=$BLUE_PORT" >> $GITHUB_ENV
-              echo "TARGET_COLOR=$BLUE" >> $GITHUB_ENV
-            else
-              echo "CURRENT_PORT=3" >> $GITHUB_ENV
-              echo "TARGET_PORT=unknown" >> $GITHUB_ENV
-            fi
-          fi
+          echo "Curl request failed or returned empty, setting CURRENT_COLOR to GREEN"
+          echo "CURRENT_COLOR=$GREEN" >> $GITHUB_ENV
+          echo "CURRENT_PORT=$GREEN_PORT" >> $GITHUB_ENV
+          echo "TARGET_COLOR=$BLUE" >> $GITHUB_ENV
+          echo "TARGET_PORT=$BLUE_PORT" >> $GITHUB_ENV
+          echo "열려있는 서버가 없기에 디폴트 컬러 BLUE로 실행"
+#          if [ $? -ne 0 ] || [ -z "$response" ]; then
+#            echo "Curl request failed or returned empty, setting CURRENT_COLOR to GREEN"
+#            echo "CURRENT_COLOR=$GREEN" >> $GITHUB_ENV
+#            echo "CURRENT_PORT=$GREEN_PORT" >> $GITHUB_ENV
+#            echo "TARGET_COLOR=$BLUE" >> $GITHUB_ENV
+#            echo "TARGET_PORT=$BLUE_PORT" >> $GITHUB_ENV
+#            echo "열려있는 서버가 없기에 디폴트 컬러 BLUE로 실행"
+#          else
+#            CURRENT_COLOR=$(echo "$response" | xargs)
+#            echo "CURRENT_COLOR=$CURRENT_COLOR" >> $GITHUB_ENV
+#            echo "현재 컬러 = $CURRENT_COLOR"
+#
+#            if [ "$CURRENT_COLOR" = "$BLUE" ]; then
+#              echo "CURRENT_PORT=$BLUE_PORT" >> $GITHUB_ENV
+#              echo "TARGET_PORT=$GREEN_PORT" >> $GITHUB_ENV
+#              echo "TARGET_COLOR=$GREEN" >> $GITHUB_ENV
+#            elif [ "$CURRENT_COLOR" = "$GREEN" ]; then
+#              echo "CURRENT_PORT=$GREEN_PORT" >> $GITHUB_ENV
+#              echo "TARGET_PORT=$BLUE_PORT" >> $GITHUB_ENV
+#              echo "TARGET_COLOR=$BLUE" >> $GITHUB_ENV
+#            else
+#              echo "CURRENT_PORT=3" >> $GITHUB_ENV
+#              echo "TARGET_PORT=unknown" >> $GITHUB_ENV
+#            fi
+#          fi
 
       # Node.js 설치
       - name: Install Node.js 22.13.0
