@@ -116,10 +116,10 @@ jobs:
             
             sudo docker pull "${{env.DOCKER_DOCKERHUB_USERNAME}}/${{env.PLATFORM}}_${{env.CURRENT_BRANCH}}_${{env.TARGET_COLOR}}"
       
-            sudo docker run -d \
-            --name "${{env.PLATFORM}}_${{env.CURRENT_BRANCH}}_${{env.TARGET_COLOR}}" \
-            -p $TARGET_PORT:80 \
-            $IMAGE_NAME
+#            sudo docker run -d \
+#            --name "${{env.PLATFORM}}_${{env.CURRENT_BRANCH}}_${{env.TARGET_COLOR}}" \
+#            -p $TARGET_PORT:80 \
+#            "${{env.PLATFORM}}_${{env.CURRENT_BRANCH}}_${{env.TARGET_COLOR}}"
 #            IMAGE_NAME="${{env.DOCKER_DOCKERHUB_USERNAME}}/${{env.PLATFORM}}_${{env.CURRENT_BRANCH}}_${{env.TARGET_COLOR}}"
 #
 #            sudo docker push $IMAGE_NAME
