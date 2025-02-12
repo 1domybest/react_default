@@ -105,10 +105,8 @@ jobs:
           key: ${{ env.EC2_SSH_KEY }}
           script_stop: true
           script: |
-            export TARGET_PORT=${{ env.TARGET_PORT }}
-            export TARGET_COLOR=${{ env.TARGET_COLOR }}
-            
             IMAGE_NAME="${{env.DOCKER_DOCKERHUB_USERNAME}}/${{env.PLATFORM}}_${{env.CURRENT_BRANCH}}_${{env.TARGET_COLOR}}"
+            TARGET_PORT="${{env.TARGET_PORT}}"
                     
             sudo docker push $IMAGE_NAME
 
