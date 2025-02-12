@@ -45,7 +45,7 @@ jobs:
             echo "CURRENT_COLOR=$GREEN" >> $GITHUB_ENV
             echo "CURRENT_PORT=$GREEN_PORT" >> $GITHUB_ENV
             echo "TARGET_COLOR=$BLUE" >> $GITHUB_ENV
-            echo "TARGET_PORT=$BLUE_PORT" >> $GITHUB_ENV
+            echo "TARGET_PORT=${{env.BLUE_PORT}}" >> $GITHUB_ENV
             echo "열려있는 서버가 없기에 디폴트 컬러 BLUE로 실행"
           else
             CURRENT_COLOR=$(echo "$response" | xargs)
