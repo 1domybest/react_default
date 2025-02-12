@@ -133,7 +133,7 @@ jobs:
           script_stop: true
           script: |
             echo "set \$react_service_url ${{env.PLATFORM}}_${{env.CURRENT_BRANCH}}_${{env.TARGET_COLOR}};" | docker exec -i nginxserver tee /etc/nginx/conf.d/react_${{env.CURRENT_BRANCH}}_service_env.inc
-            docker exec -i nginxserver nginx -s reload
+            sudo docker exec -i nginxserver nginx -s reload
 
       # 기존 서버 중지
       - name: Stop previous server
@@ -145,7 +145,7 @@ jobs:
           script_stop: true
           script: |
             OLD_CONTAINER="${{env.PLATFORM}}_${{env.CURRENT_BRANCH}}_${{env.CURRENT_COLOR}}"
-            if docker ps -a --format '{{.Names}}' | grep -q "^$OLD_CONTAINER$"; then
-              docker stop $OLD_CONTAINER
-              docker rm $OLD_CONTAINER
+            if sudo docker ps -a --format '{{.Names}}' | grep -q "^$OLD_CONTAINER$"; then
+              sudo docker stop $OLD_CONTAINER
+              sudo docker rm $OLD_CONTAINER
             fi
