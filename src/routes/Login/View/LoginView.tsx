@@ -34,7 +34,7 @@ const LoginView= observer(() => {
                     </LogoBox>
                     <LoginTitle>
                         <Link to="/main">
-                            이메일을 입력하세요
+                            이메일을 입력하세요 테스트
                         </Link>
 
                     </LoginTitle>
