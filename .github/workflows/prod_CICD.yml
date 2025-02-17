@@ -1,0 +1,158 @@
+name: CI
+
+env:
+  SERVER_USERNAME: ${{ secrets.SERVER_USERNAME }}
+  SERVER_IP: ${{ secrets.SERVER_IP }}
+  SERVER_PASSWORD: ${{ secrets.SERVER_PASSWORD }}
+  SERVER_KEY: ${{ secrets.SERVER_KEY }}
+
+  DOCKER_DOCKERHUB_USERNAME: ${{ secrets.DOCKER_DOCKERHUB_USERNAME }}
+  DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
+
+  PLATFORM: "react"
+  BLUE: "blue"
+  GREEN: "green"
+  BLUE_PORT: 3000
+  GREEN_PORT: 3001
+  REACT_HC_PORT: 80
+  DOMAIN: "seoktae.online"
+
+on:
+  push:
+    branches: ["prod"]
+  pull_request:
+    branches: ["prod"]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      # 트리거된 브랜치 명 저장
+      - name: Set CURRENT_BRANCH
+        run: |
+          echo "CURRENT_BRANCH=${GITHUB_REF_NAME}" >> $GITHUB_ENV
+          echo "Triggered by branch: ${GITHUB_REF_NAME}"
+
+      # 현재 열린 서버 확인
+      - name: Fetch container name from Nginx
+        run: |
+          status_code=$(curl -s -o /dev/null -w "%{http_code}" https://${{env.DOMAIN}}/env)
+          
+          if [[ "$status_code" -eq 200 ]]; then
+            echo "✅ 서버가 정상 응답함 (200 OK)"
+            response=$(curl -s https://${{env.DOMAIN}}/env)
+            echo "Raw response: $response"
+          
+            CURRENT_COLOR=$(echo "$response" | jq -r '.color')  # JSON에서 color 값 추출
+            echo "CURRENT_COLOR=$CURRENT_COLOR" >> $GITHUB_ENV
+            echo "현재 컬러 = $CURRENT_COLOR"
+
+            if [ "$CURRENT_COLOR" = "$BLUE" ]; then
+              echo "CURRENT_PORT=$BLUE_PORT" >> $GITHUB_ENV
+              echo "TARGET_PORT=$GREEN_PORT" >> $GITHUB_ENV
+              echo "TARGET_COLOR=$GREEN" >> $GITHUB_ENV
+            elif [ "$CURRENT_COLOR" = "$GREEN" ]; then
+              echo "CURRENT_PORT=$GREEN_PORT" >> $GITHUB_ENV
+              echo "TARGET_PORT=$BLUE_PORT" >> $GITHUB_ENV
+              echo "TARGET_COLOR=$BLUE" >> $GITHUB_ENV
+            else
+              echo "CURRENT_PORT=3" >> $GITHUB_ENV
+              echo "TARGET_PORT=unknown" >> $GITHUB_ENV
+            fi
+          else
+            echo "⚠️ 예상치 못한 상태 코드: $status_code"
+          
+            echo "Curl request failed or returned empty, setting CURRENT_COLOR to GREEN"
+            echo "CURRENT_COLOR=$GREEN" >> $GITHUB_ENV
+            echo "CURRENT_PORT=$GREEN_PORT" >> $GITHUB_ENV
+            echo "TARGET_COLOR=$BLUE" >> $GITHUB_ENV
+            echo "TARGET_PORT=$BLUE_PORT" >> $GITHUB_ENV
+            echo "열려있는 서버가 없기에 디폴트 컬러 BLUE로 실행"
+          fi
+
+      # Node.js 설치
+      - name: Install Node.js 22.13.0
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22.13.0'
+
+      # npm install
+      - name: Install Dependencies
+        run: npm install
+
+      # npm build --mode 브랜치.컬러
+      - name: Build
+        run: npm run build -- --mode ${{env.CURRENT_BRANCH}}.${{env.TARGET_COLOR}}
+
+      # Docker 로그인
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ env.DOCKER_DOCKERHUB_USERNAME }}
+          password: ${{ env.DOCKER_TOKEN }}
+
+      # Docker Build & Push
+      - name: Build and Push Docker Image
+        run: |
+          IMAGE_NAME="${{env.DOCKER_DOCKERHUB_USERNAME}}/${{env.PLATFORM}}_${{env.CURRENT_BRANCH}}_${{env.TARGET_COLOR}}"
+          docker build --platform linux/amd64 \
+            --build-arg COLOR=$TARGET_COLOR \
+            -f ./nginx/Dockerfile -t $IMAGE_NAME:latest .
+          docker push $IMAGE_NAME:latest
+
+      # SSH 접속해서 docker compose 실행
+      - name: Deploy with Docker Compose
+        uses: appleboy/ssh-action@master
+        with:
+          username: ${{ env.SERVER_USERNAME }}
+          host: ${{ env.SERVER_IP }}
+          key: ${{ env.SERVER_KEY }}
+          password: ${{ env.SERVER_PASSWORD }}
+          script_stop: true
+          script: |
+            docker run -d \
+            --name "${{env.PLATFORM}}_${{env.CURRENT_BRANCH}}_${{env.TARGET_COLOR}}" \
+            -p "${{env.TARGET_PORT}}:80" \
+            "${{env.DOCKER_DOCKERHUB_USERNAME}}/${{env.PLATFORM}}_${{env.CURRENT_BRANCH}}_${{env.TARGET_COLOR}}"
+
+      # 배포된 서버 확인
+      - name: Check deployed server URL
+        uses: jtalk/url-health-check-action@v3
+        with:
+          url: http://${{env.SERVER_IP}}:${{env.REACT_HC_PORT}}/${{env.PLATFORM}}/${{env.CURRENT_BRANCH}}/${{env.TARGET_COLOR}}
+          max-attempts: 3
+          retry-delay: 10s
+
+      # Nginx upstream 변경
+      - name: Change nginx upstream
+        uses: appleboy/ssh-action@master
+        with:
+          username: ${{ env.SERVER_USERNAME }}
+          host: ${{ env.SERVER_IP }}
+          key: ${{ env.SERVER_KEY }}
+          password: ${{ env.SERVER_PASSWORD }}
+          script_stop: true
+          script: |
+            echo "set \$react_service_url ${{env.PLATFORM}}_${{env.CURRENT_BRANCH}}_${{env.TARGET_COLOR}};" | docker exec -i main_nginx tee /etc/nginx/sites-available/seoktae.online/config/frontend/react_service_env.inc
+            docker exec -i main_nginx nginx -s reload
+
+      # 기존 서버 중지
+      - name: Stop previous server
+        uses: appleboy/ssh-action@master
+        with:
+          username: ${{ env.SERVER_USERNAME }}
+          host: ${{ env.SERVER_IP }}
+          key: ${{ env.SERVER_KEY }}
+          password: ${{ env.SERVER_PASSWORD }}
+          script_stop: true
+          script: |
+            OLD_CONTAINER="${{env.PLATFORM}}_${{env.CURRENT_BRANCH}}_${{env.CURRENT_COLOR}}"
+            if docker ps -a --format '{{.Names}}' | grep -q "^$OLD_CONTAINER$"; then
+              docker stop $OLD_CONTAINER
+              docker rm $OLD_CONTAINER
+            fi

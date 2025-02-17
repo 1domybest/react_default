@@ -3,27 +3,29 @@ name: CI
 env:
   SERVER_USERNAME: ${{ secrets.SERVER_USERNAME }}
   SERVER_IP: ${{ secrets.SERVER_IP }}
-  EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
+  SERVER_PASSWORD: ${{ secrets.SERVER_PASSWORD }}
+  SERVER_KEY: ${{ secrets.SERVER_KEY }}
+
   DOCKER_DOCKERHUB_USERNAME: ${{ secrets.DOCKER_DOCKERHUB_USERNAME }}
   DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
 
   PLATFORM: "react"
   BLUE: "blue"
   GREEN: "green"
-  BLUE_PORT: 3000
-  GREEN_PORT: 3001
+  BLUE_PORT: 3010
+  GREEN_PORT: 3011
   REACT_HC_PORT: 80
   DOMAIN: "seoktae.online"
 
 on:
   push:
-    branches: ["qa", "prod"]
+    branches: ["qa"]
   pull_request:
-    branches: ["qa", "prod"]
+    branches: ["qa"]
 
 permissions:
   contents: read
- 
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -109,10 +111,11 @@ jobs:
         with:
           username: ${{ env.SERVER_USERNAME }}
           host: ${{ env.SERVER_IP }}
-          key: ${{ env.EC2_SSH_KEY }}
+          key: ${{ env.SERVER_KEY }}
+          password: ${{ env.SERVER_PASSWORD }}
           script_stop: true
           script: |
-            sudo docker run -d \
+            docker run -d \
             --name "${{env.PLATFORM}}_${{env.CURRENT_BRANCH}}_${{env.TARGET_COLOR}}" \
             -p "${{env.TARGET_PORT}}:80" \
             "${{env.DOCKER_DOCKERHUB_USERNAME}}/${{env.PLATFORM}}_${{env.CURRENT_BRANCH}}_${{env.TARGET_COLOR}}"
@@ -131,11 +134,12 @@ jobs:
         with:
           username: ${{ env.SERVER_USERNAME }}
           host: ${{ env.SERVER_IP }}
-          key: ${{ env.EC2_SSH_KEY }}
+          key: ${{ env.SERVER_KEY }}
+          password: ${{ env.SERVER_PASSWORD }}
           script_stop: true
           script: |
-            echo "set \$react_service_url ${{env.PLATFORM}}_${{env.CURRENT_BRANCH}}_${{env.TARGET_COLOR}};" | sudo docker exec -i main_nginx tee /etc/nginx/sites-available/seoktae.online/config/frontend/react_service_env.inc
-            sudo docker exec -i main_nginx nginx -s reload
+            echo "set \$react_service_url ${{env.PLATFORM}}_${{env.CURRENT_BRANCH}}_${{env.TARGET_COLOR}};" | docker exec -i main_nginx tee /etc/nginx/sites-available/seoktae.online/config/frontend/react_service_env.inc
+            docker exec -i main_nginx nginx -s reload
 
       # 기존 서버 중지
       - name: Stop previous server
@@ -143,11 +147,12 @@ jobs:
         with:
           username: ${{ env.SERVER_USERNAME }}
           host: ${{ env.SERVER_IP }}
-          key: ${{ env.EC2_SSH_KEY }}
+          key: ${{ env.SERVER_KEY }}
+          password: ${{ env.SERVER_PASSWORD }}
           script_stop: true
           script: |
             OLD_CONTAINER="${{env.PLATFORM}}_${{env.CURRENT_BRANCH}}_${{env.CURRENT_COLOR}}"
-            if sudo docker ps -a --format '{{.Names}}' | grep -q "^$OLD_CONTAINER$"; then
-              sudo docker stop $OLD_CONTAINER
-              sudo docker rm $OLD_CONTAINER
+            if docker ps -a --format '{{.Names}}' | grep -q "^$OLD_CONTAINER$"; then
+              docker stop $OLD_CONTAINER
+              docker rm $OLD_CONTAINER
             fi
