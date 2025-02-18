@@ -7,7 +7,7 @@ class BottomSheetObserver {
     isBottomSheetVisible = false;
 
     isAlertVisible = false;
-    alertMessage = "";
+    alertMessage = ""; 
 
     constructor() {
         makeAutoObservable(this);
