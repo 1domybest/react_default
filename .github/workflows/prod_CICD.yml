@@ -14,8 +14,6 @@ env:
   GREEN: "green"
   BLUE_PORT: 3000
   GREEN_PORT: 3001
-  BLUE_IP: 172.19.1.2
-  GREEN_IP: 172.19.1.3
   REACT_HC_PORT: 80
   DOMAIN: "seoktae.online"
 
@@ -58,12 +56,10 @@ jobs:
               echo "CURRENT_PORT=$BLUE_PORT" >> $GITHUB_ENV
               echo "TARGET_PORT=$GREEN_PORT" >> $GITHUB_ENV
               echo "TARGET_COLOR=$GREEN" >> $GITHUB_ENV
-              echo "TARGET_IP=$GREEN_IP" >> $GITHUB_ENV
             elif [ "$CURRENT_COLOR" = "$GREEN" ]; then
               echo "CURRENT_PORT=$GREEN_PORT" >> $GITHUB_ENV
               echo "TARGET_PORT=$BLUE_PORT" >> $GITHUB_ENV
               echo "TARGET_COLOR=$BLUE" >> $GITHUB_ENV
-              echo "TARGET_IP=$BLUE_IP" >> $GITHUB_ENV
             else
               echo "CURRENT_PORT=3" >> $GITHUB_ENV
               echo "TARGET_PORT=unknown" >> $GITHUB_ENV
@@ -76,7 +72,6 @@ jobs:
             echo "CURRENT_PORT=$GREEN_PORT" >> $GITHUB_ENV
             echo "TARGET_COLOR=$BLUE" >> $GITHUB_ENV
             echo "TARGET_PORT=$BLUE_PORT" >> $GITHUB_ENV
-            echo "TARGET_IP=$BLUE_IP" >> $GITHUB_ENV
             echo "열려있는 서버가 없기에 디폴트 컬러 BLUE로 실행"
           fi
 
@@ -123,8 +118,6 @@ jobs:
             docker run -d \
             --name "${{env.PLATFORM}}_${{env.CURRENT_BRANCH}}_${{env.TARGET_COLOR}}" \
             -p "${{env.TARGET_PORT}}:80" \
-            --network react_network \
-            --ip ${{ env.TARGET_IP }} \
             "${{env.DOCKER_DOCKERHUB_USERNAME}}/${{env.PLATFORM}}_${{env.CURRENT_BRANCH}}_${{env.TARGET_COLOR}}"
 
       # 배포된 서버 확인
