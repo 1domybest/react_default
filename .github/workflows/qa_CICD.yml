@@ -99,10 +99,10 @@ jobs:
       # Docker Build & Push
       - name: Build and Push Docker Image
         run: |
-          IMAGE_NAME="${{env.DOCKER_DOCKERHUB_USERNAME}}/${{env.PLATFORM}}_${{env.CURRENT_BRANCH}}_${{env.TARGET_COLOR}}"
+          IMAGE_NAME="${{env.DOCKER_DOCKERHUB_USERNAME}}/${{env.PLATFORM}}_${{env.CURRENT_BRANCH}}_${{env.TARGET_COLOR}}:latest"
           docker build --platform linux/amd64 \
             --build-arg COLOR=$TARGET_COLOR \
-            -f ./nginx/Dockerfile -t $IMAGE_NAME:latest .
+            -f ./nginx/Dockerfile -t $IMAGE_NAME .
           docker push $IMAGE_NAME
 
       # SSH 접속해서 docker compose 실행
