@@ -39,7 +39,7 @@ jobs:
           echo "Triggered by branch: ${GITHUB_REF_NAME}"
 
       # 현재 열린 서버 확인
-      - name: Fetch container name from Nginx
+      - name: 현재 열려있는 Nginx 색깔 확인
         run: |
           status_code=$(curl -s -o /dev/null -w "%{http_code}" https://${{env.DOMAIN}}/env)
   
@@ -139,7 +139,7 @@ jobs:
             docker exec -i main_nginx nginx -s reload
 
       # 이전 서버 중지
-      - name: Stop previous server
+      - name: 이전 서버 중지
         uses: appleboy/ssh-action@master
         with:
           username: ${{ env.SERVER_USERNAME }}
