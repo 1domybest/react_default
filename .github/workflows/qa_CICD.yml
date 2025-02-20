@@ -103,7 +103,7 @@ jobs:
           docker build --platform linux/amd64 \
             --build-arg COLOR=$TARGET_COLOR \
             -f ./nginx/Dockerfile -t $IMAGE_NAME:latest .
-          docker push $IMAGE_NAME:latest
+          docker push $IMAGE_NAME
 
       # SSH 접속해서 docker compose 실행
       - name: Deploy with Docker Compose
