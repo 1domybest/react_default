@@ -1,6 +1,7 @@
 import {makeAutoObservable} from "mobx";
 import {NavigateFunction} from "react-router";
 import {tokenRefresh} from "../../../../service/AuthAPI.tsx";
+import {ServerConstants} from "../../../../utils/api/ServerEnum.tsx";
 
 
 class LoginBottomSheetViewModel {
@@ -33,7 +34,7 @@ class LoginBottomSheetViewModel {
     snsLogin(provider: string) {
 
         const loginWindow = window.open(
-            `http://localhost:8080/oauth2/authorization/${provider}`,
+            `http://${ServerConstants.SERVER_URL}/oauth2/authorization/${provider}`,
             "login",
             "width=auto,height=auto,top=100,left=100,location=no,resizable=yes,menubar=no,toolbar=no,status=no"
         );
