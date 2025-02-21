@@ -3,7 +3,6 @@ import {useNavigate} from "react-router-dom";
 import {useEffect, useRef} from "react";
 import {Button} from "react-bootstrap";
 import MainViewModel from "../ViewModel/MainViewModel.tsx";
-import {ServerConstants} from "../../../utils/api/ServerEnum.tsx";
 
 export interface MainViewProps {
     someData: string;
