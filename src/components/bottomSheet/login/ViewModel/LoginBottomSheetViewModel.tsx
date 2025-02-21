@@ -31,6 +31,7 @@ class LoginBottomSheetViewModel {
     }
 
     snsLogin(provider: string) {
+
         const loginWindow = window.open(
             `http://localhost:8080/oauth2/authorization/${provider}`,
             "login",
@@ -48,6 +49,7 @@ class LoginBottomSheetViewModel {
 
     // SNS 로그인 성공 처리
     async succeedSNSLogin() {
+        console.log("로그인 성공은 함")
         await tokenRefresh()
             .then(() => {
                 this.loginSucceed(this.pk)

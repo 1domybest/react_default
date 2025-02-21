@@ -2,7 +2,7 @@ import axios from 'axios';
 import {HeaderKeys, ServerConstants} from "./ServerEnum.tsx";
 
 export const jsonPlaceholderRequest = axios.create({
-    baseURL: ServerConstants.BASE_URL,
+    baseURL: ServerConstants.SERVER_URL.toString(),
     withCredentials: true,
     timeout: 3000,
 });
@@ -24,6 +24,7 @@ jsonPlaceholderRequest.interceptors.request.use(
 
 jsonPlaceholderRequest.interceptors.response.use(
     (response) => {
+        console.log("반환값", response);
         return response;
     },
     async (error) => {

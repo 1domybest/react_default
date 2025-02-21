@@ -1,20 +1,21 @@
 import {observer} from "mobx-react";
 import {useNavigate} from "react-router-dom";
 import {useEffect, useRef} from "react";
-import DefaultViewModel from "../../Default/ViewModel/DefaultViewModel.tsx";
+import {Button} from "react-bootstrap";
+import MainViewModel from "../ViewModel/MainViewModel.tsx";
+import {ServerConstants} from "../../../utils/api/ServerEnum.tsx";
 
 export interface MainViewProps {
     someData: string;
 }
 
 
-const MainView = observer(({ someData }: MainViewProps) => {
-
+const MainView= observer(() => {
     const navigate = useNavigate();
-    const vm = useRef<DefaultViewModel | null>(new DefaultViewModel());
+    const vm = useRef<MainViewModel | null>(new MainViewModel());
 
     useEffect(() => {
-        console.log("View 마운트", someData, navigate, vm)
+        console.log("View 마운트", navigate, vm)
         // vm.current?.init()
         // vm.current?.setNavigate(navigate)
         return () => {
@@ -28,6 +29,13 @@ const MainView = observer(({ someData }: MainViewProps) => {
 
     return <>
         메인뷰
+        <Button onClick={(event) => {
+            event.preventDefault()
+            vm.current?.snsLogin()
+        }}>
+            로그인
+        </Button>
+
     </>
 });
 

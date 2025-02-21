@@ -37,7 +37,7 @@ const App = observer(() => {
 
                     <Routes>
                         {/*<Route path="/" element={<LoginView />} />*/}
-                        <Route path="/" element={<MainView someData={""} />} />
+                        <Route path="/" element={<MainView/>} />
                         <Route path="/oauth2/succeed" element={<OAuth2SucceedView />} />
 
                     </Routes>

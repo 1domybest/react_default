@@ -10,9 +10,9 @@ export default defineConfig(({ mode }) => {
   dotenv({ path: envPath })
   const env = loadEnv(mode, process.cwd(), '')
 
-  console.log("이름:", env.ENV)
-  console.log("포트:", env.PORT)
-  console.log("API_URL:", env.API_URL)
+  console.log("이름:", env.VITE_ENV)
+  console.log("포트:", env.VITE_PORT)
+  console.log("API_URL:", env.VITE_API_URL)
 
   const serverPort:number= Number(env.PORT)
 
