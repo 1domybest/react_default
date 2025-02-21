@@ -13,7 +13,7 @@ env:
   BLUE: "blue"
   GREEN: "green"
   BLUE_PORT: 3000
-  GREEN_PORT: 3001
+  GREEN_PORT: 3010
   REACT_HC_PORT: 80
   DOMAIN: "seoktae.online"
 
@@ -33,13 +33,13 @@ jobs:
       - uses: actions/checkout@v3
 
       # 트리거된 브랜치 명 저장
-      - name: Set CURRENT_BRANCH
+      - name: 현재 브랜치 체크
         run: |
           echo "CURRENT_BRANCH=${GITHUB_REF_NAME}" >> $GITHUB_ENV
           echo "Triggered by branch: ${GITHUB_REF_NAME}"
 
       # 현재 열린 서버 확인
-      - name: Fetch container name from Nginx
+      - name: 현재 열려있는 Nginx 색깔 확인
         run: |
           status_code=$(curl -s -o /dev/null -w "%{http_code}" https://${{env.DOMAIN}}/env)
           
@@ -76,37 +76,37 @@ jobs:
           fi
 
       # Node.js 설치
-      - name: Install Node.js 22.13.0
+      - name: Node.js 22.13.0 설치
         uses: actions/setup-node@v3
         with:
           node-version: '22.13.0'
 
       # npm install
-      - name: Install Dependencies
+      - name: npm install
         run: npm install
 
       # npm build --mode 브랜치.컬러
-      - name: Build
+      - name: npm Build
         run: npm run build_${{env.CURRENT_BRANCH}}_${{env.TARGET_COLOR}}
 
       # Docker 로그인
-      - name: Login to DockerHub
+      - name: Docker 로그인
         uses: docker/login-action@v1
         with:
           username: ${{ env.DOCKER_DOCKERHUB_USERNAME }}
           password: ${{ env.DOCKER_TOKEN }}
 
       # Docker Build & Push
-      - name: Build and Push Docker Image
+      - name: Docker 빌드 -> 푸시
         run: |
-          IMAGE_NAME="${{env.DOCKER_DOCKERHUB_USERNAME}}/${{env.PLATFORM}}_${{env.CURRENT_BRANCH}}_${{env.TARGET_COLOR}}"
+          IMAGE_NAME="${{env.DOCKER_DOCKERHUB_USERNAME}}/${{env.PLATFORM}}_${{env.CURRENT_BRANCH}}_${{env.TARGET_COLOR}}:latest"
           docker build --platform linux/amd64 \
             --build-arg COLOR=$TARGET_COLOR \
-            -f ./nginx/Dockerfile -t $IMAGE_NAME:latest .
-          docker push $IMAGE_NAME:latest
+            -f ./nginx/Dockerfile -t $IMAGE_NAME .
+          docker push $IMAGE_NAME
 
       # SSH 접속해서 docker compose 실행
-      - name: Deploy with Docker Compose
+      - name: 서버에있는 도커 yml compose up
         uses: appleboy/ssh-action@master
         with:
           username: ${{ env.SERVER_USERNAME }}
@@ -115,13 +115,10 @@ jobs:
           password: ${{ env.SERVER_PASSWORD }}
           script_stop: true
           script: |
-            docker run -d \
-            --name "${{env.PLATFORM}}_${{env.CURRENT_BRANCH}}_${{env.TARGET_COLOR}}" \
-            -p "${{env.TARGET_PORT}}:80" \
-            "${{env.DOCKER_DOCKERHUB_USERNAME}}/${{env.PLATFORM}}_${{env.CURRENT_BRANCH}}_${{env.TARGET_COLOR}}"
+            docker-compose -f /home/onseoktae/Documents/GitHub/ServerDefault/nginx/sites-available/${{ env.DOMAIN }}/composes/frontend/docker_compose_${{env.PLATFORM}}_${{env.CURRENT_BRANCH}}_${{env.TARGET_COLOR}}.yml up -d --force-recreate
 
       # 배포된 서버 확인
-      - name: Check deployed server URL
+      - name: 현재 배포되어 있는 서버 색깔 확인
         uses: jtalk/url-health-check-action@v3
         with:
           url: http://${{env.SERVER_IP}}:${{env.REACT_HC_PORT}}/${{env.PLATFORM}}/${{env.CURRENT_BRANCH}}/${{env.TARGET_COLOR}}
@@ -129,7 +126,7 @@ jobs:
           retry-delay: 10s
 
       # Nginx upstream 변경
-      - name: Change nginx upstream
+      - name: nginx upstream 변경
         uses: appleboy/ssh-action@master
         with:
           username: ${{ env.SERVER_USERNAME }}
@@ -141,8 +138,8 @@ jobs:
             echo "set \$react_service_url ${{env.PLATFORM}}_${{env.CURRENT_BRANCH}}_${{env.TARGET_COLOR}};" | docker exec -i main_nginx tee /etc/nginx/sites-available/seoktae.online/config/frontend/react_service_env.inc
             docker exec -i main_nginx nginx -s reload
 
-      # 기존 서버 중지
-      - name: Stop previous server
+      # 이전 서버 중지
+      - name: 이전 서버 중지
         uses: appleboy/ssh-action@master
         with:
           username: ${{ env.SERVER_USERNAME }}
