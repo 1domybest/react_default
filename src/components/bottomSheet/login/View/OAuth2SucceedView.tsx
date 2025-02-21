@@ -5,6 +5,7 @@ const OAuth2SucceedView = () => {
         window.close()
     }, []);
     return <>
+        성공
     </>
 }
 

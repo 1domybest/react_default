@@ -17,7 +17,7 @@ import CustomBottomSheet from "./components/bottomSheet/CustomBottomSheet.tsx";
 import CustomTextAlert from "./components/textAlert/CustomTextAlert.tsx";
 
 // View
-import LoginView from "./routes/Login/View/LoginView.tsx";
+// import LoginView from "./routes/Login/View/LoginView.tsx";
 import OAuth2SucceedView from "./components/bottomSheet/login/View/OAuth2SucceedView.tsx";
 import MainView from "./routes/Main/View/MainView.tsx";
 
@@ -36,9 +36,10 @@ const App = observer(() => {
                     ))}
 
                     <Routes>
-                        <Route path="/" element={<LoginView />} />
+                        {/*<Route path="/" element={<LoginView />} />*/}
+                        <Route path="/" element={<MainView someData={""} />} />
                         <Route path="/oauth2/succeed" element={<OAuth2SucceedView />} />
-                        <Route path="/main" element={<MainView someData={""} />} />
+
                     </Routes>
                 </Router>
             </div>

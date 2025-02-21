@@ -4,7 +4,18 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "start_dev": "vite --mode dev",
+
+    "start_local": "vite --mode dev_local",
+    "start_prod": "vite --mode prod_blue",
+    "start_qa": "vite --mode qa_blue",
+
+    "build_local": "tsc -b && vite build --mode local",
+    "build_qa_blue": "tsc -b && vite build --mode qa_blue",
+    "build_qa_green": "tsc -b && vite build --mode qa_green",
+    "build_prod_blue": "tsc -b && vite build --mode prod_blue",
+    "build_prod_green": "tsc -b && vite build --mode prod_green",
+
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
@@ -13,6 +24,7 @@
     "@types/react-router-dom": "^5.3.3",
     "axios": "^1.7.9",
     "bootstrap": "^5.3.3",
+    "dotenv": "^16.4.7",
     "mobx-react": "^9.2.0",
     "react": "^18.3.1",
     "react-bootstrap": "^2.10.8",
