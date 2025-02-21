@@ -13,7 +13,7 @@ export default defineConfig(({ mode }) => {
   console.log("이름:", env.VITE_ENV)
   console.log("포트:", env.VITE_PORT)
   console.log("API_URL:", env.VITE_API_URL)
-
+ 
   const serverPort:number= Number(env.VITE_PORT)
 
   return {
