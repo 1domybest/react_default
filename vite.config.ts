@@ -14,7 +14,7 @@ export default defineConfig(({ mode }) => {
   console.log("포트:", env.VITE_PORT)
   console.log("API_URL:", env.VITE_API_URL)
 
-  const serverPort:number= Number(env.PORT)
+  const serverPort:number= Number(env.VITE_PORT)
 
   return {
     plugins: [react()],

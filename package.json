@@ -6,7 +6,7 @@
   "scripts": {
     "start_dev": "vite --mode dev",
 
-    "start_local": "vite --mode dev_local",
+    "start_local": "vite --mode local_dev",
     "start_prod": "vite --mode prod_blue",
     "start_qa": "vite --mode qa_blue",
 
