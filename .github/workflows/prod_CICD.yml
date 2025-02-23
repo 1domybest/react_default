@@ -41,7 +41,7 @@ jobs:
       # 현재 열린 서버 확인
       - name: 현재 열려있는 Nginx 색깔 확인
         run: |
-          status_code=$(curl -s -o /dev/null -w "%{http_code}" http://${{env.DOMAIN}}/env)
+          status_code=$(curl -s -o /dev/null -w "%{http_code}" -L http://${{env.DOMAIN}}/env)
           
           if [[ "$status_code" -eq 200 ]]; then
             echo "✅ 서버가 정상 응답함 (200 OK)"
