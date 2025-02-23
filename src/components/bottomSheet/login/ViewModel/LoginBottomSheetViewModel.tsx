@@ -34,7 +34,7 @@ class LoginBottomSheetViewModel {
     snsLogin(provider: string) {
 
         const loginWindow = window.open(
-            `${ServerConstants.SERVER_URL}/api/oauth2/authorization/${provider}`,
+            `${ServerConstants.SERVER_URL}/oauth2/authorization/${provider}`,
             "login",
             "width=auto,height=auto,top=100,left=100,location=no,resizable=yes,menubar=no,toolbar=no,status=no"
         );
