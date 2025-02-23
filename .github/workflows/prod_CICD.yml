@@ -135,7 +135,7 @@ jobs:
           password: ${{ env.SERVER_PASSWORD }}
           script_stop: true
           script: |
-            echo "set \$react_service_url ${{env.PLATFORM}}_${{env.CURRENT_BRANCH}}_${{env.TARGET_COLOR}};" | docker exec -i main_nginx tee /etc/nginx/sites-available/seoktae.online/config/env.inc
+            echo "set \$react_service_url ${{env.PLATFORM}}_${{env.CURRENT_BRANCH}}_${{env.TARGET_COLOR}};" | docker exec -i main_nginx tee /etc/nginx/sites-available/${{ env.DOMAIN }}/config/env.inc
             docker exec -i main_nginx nginx -s reload
 
       # 이전 서버 중지
