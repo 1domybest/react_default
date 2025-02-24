@@ -1,10 +1,10 @@
 export enum ApiEnums {
-    BASE = '/api',
-    TOKEN_TEST = ApiEnums.BASE + '/tokenTest',
-    TOKEN_REFRESH = ApiEnums.BASE + '/token-refresh',
-    POST_JOIN = ApiEnums.BASE + '/join',
-    POST_LOGIN = ApiEnums.BASE + '/login',
-    SNS_LOGIN = ApiEnums.BASE + '/snsLogin',
+    BASE = '/',
+    TOKEN_TEST = '/tokenTest',
+    TOKEN_REFRESH = '/token-refresh',
+    POST_JOIN = '/join',
+    POST_LOGIN = '/login',
+    SNS_LOGIN = '/snsLogin',
 };
 
 
