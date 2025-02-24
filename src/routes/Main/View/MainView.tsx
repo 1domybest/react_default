@@ -49,7 +49,7 @@ const MainView= observer(() => {
                     console.log(error)
                 })
         }}>
-            리프레쉬 토큰
+            리프레쉬 토큰a
         </Button>
 
     </>
