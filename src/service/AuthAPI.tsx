@@ -10,6 +10,8 @@ export const tokenRefresh = async () => {
             method: HTTP_METHOD.POST,
         });
 
+        console.log("받은 response", response)
+
         // 서버에서 받은 새로운 엑세스 토큰을 기본 헤더에 설정
         jsonPlaceholderRequest.defaults.headers.common[HeaderKeys.Authorization] = response.headers[HeaderKeys.Authorization].substring(7);
 

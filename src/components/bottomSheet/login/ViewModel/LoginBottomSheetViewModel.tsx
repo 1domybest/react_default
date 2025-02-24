@@ -1,6 +1,6 @@
 import {makeAutoObservable} from "mobx";
 import {NavigateFunction} from "react-router";
-// import {tokenRefresh} from "../../../../service/AuthAPI.tsx";
+import {tokenRefresh} from "../../../../service/AuthAPI.tsx";
 import {ServerConstants} from "../../../../utils/api/ServerEnum.tsx";
 
 
@@ -51,15 +51,15 @@ class LoginBottomSheetViewModel {
     // SNS 로그인 성공 처리
     async succeedSNSLogin() {
         console.log("로그인 성공은 함")
-        this.loginSucceed(this.pk)
-        // await tokenRefresh()
-        //     .then(() => {
-        //         this.loginSucceed(this.pk)
-        //     })
-        //     .catch(error => {
-        //         this.loginFailed(this.pk)
-        //         console.log(error)
-        //     })
+        // this.loginSucceed(this.pk)
+        await tokenRefresh()
+            .then(() => {
+                this.loginSucceed(this.pk)
+            })
+            .catch(error => {
+                this.loginFailed(this.pk)
+                console.log(error)
+            })
     }
 
 }
