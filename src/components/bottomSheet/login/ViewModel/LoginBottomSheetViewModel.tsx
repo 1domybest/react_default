@@ -51,14 +51,15 @@ class LoginBottomSheetViewModel {
     // SNS 로그인 성공 처리
     async succeedSNSLogin() {
         console.log("로그인 성공은 함")
-        await tokenRefresh()
-            .then(() => {
-                this.loginSucceed(this.pk)
-            })
-            .catch(error => {
-                this.loginFailed(this.pk)
-                console.log(error)
-            })
+        this.loginSucceed(this.pk)
+        // await tokenRefresh()
+        //     .then(() => {
+        //         this.loginSucceed(this.pk)
+        //     })
+        //     .catch(error => {
+        //         this.loginFailed(this.pk)
+        //         console.log(error)
+        //     })
     }
 
 }
