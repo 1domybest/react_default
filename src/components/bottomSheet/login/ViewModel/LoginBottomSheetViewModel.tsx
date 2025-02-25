@@ -1,6 +1,6 @@
 import {makeAutoObservable} from "mobx";
 import {NavigateFunction} from "react-router";
-import {snsTokenRefresh, tokenRefresh} from "../../../../service/AuthAPI.tsx";
+import { tokenRefresh } from "../../../../service/AuthAPI.tsx";
 import {ServerConstants, TOKEN_EXPIRES} from "../../../../utils/api/ServerEnum.tsx";
 class LoginBottomSheetViewModel {
     navigate: NavigateFunction | null = null;
