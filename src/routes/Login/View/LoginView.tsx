@@ -84,7 +84,6 @@ const LoginView= observer(() => {
 
                             <button className={"login-button x"} onClick={(event) => {
                                 event.preventDefault();
-                                vm.current?.getData();
                             }}>
                                 <img src="/snsLogos/xLogo.png"/>
                                 Sign in with X

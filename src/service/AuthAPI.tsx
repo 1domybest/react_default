@@ -2,19 +2,6 @@ import {jsonPlaceholderRequest} from '../utils/api/apiInterceptors.tsx';
 import {ApiEnums, HeaderKeys, HTTP_METHOD} from '../utils/api/ServerEnum.tsx';
 
 // 토큰 재발급 api
-export const snsTokenRefresh = async () => {
-    try {
-        tokenRefresh()
-            .then(() => {
-                setTimeout(tokenRefresh, (100 * 60));
-            })
-    } catch (error) {
-        console.error("리프레쉬 요청 중 오류 발생:", error);
-        return Promise.reject(error);
-    }
-};
-
-// 토큰 재발급 api
 export const tokenRefresh = async () => {
     try {
         // 리프레시 토큰을 사용하여 엑세스 토큰 갱신 요청
