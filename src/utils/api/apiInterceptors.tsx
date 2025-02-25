@@ -1,5 +1,10 @@
 import axios from 'axios';
 import {HeaderKeys, ServerConstants} from "./ServerEnum.tsx";
+import {getCookie} from "../cookieUtils.ts";
+import {CustomBottomSheetModel} from "../../components/CustomBottomSheetModel.tsx";
+import LoginBottomSheetView from "../../components/bottomSheet/login/View/LoginBottomSheetView.tsx";
+import BottomSheetObserver from "../../components/bottomSheet/BottomSheetObserver.tsx";
+import CustomBottomSheetObserver from "../../components/bottomSheet/BottomSheetObserver.tsx";
 
 export const jsonPlaceholderRequest = axios.create({
     baseURL: ServerConstants.SERVER_URL.toString(),
@@ -9,11 +14,31 @@ export const jsonPlaceholderRequest = axios.create({
 
 jsonPlaceholderRequest.interceptors.request.use(
     (config) => {
-        console.log('호출 전 수행할 작업!', config.headers[HeaderKeys.Authorization]);
-        /*config.headers.Authorization = `Bearer ${localStorage.getItem(
-                          'accessToken'
-                        )}`;*/
+        if (config.headers[HeaderKeys.Authorization] == undefined ) {
+            if (getCookie("access") == undefined) {
+                // 토큰 필요
+                // 로그인 페이지로
+                const pk: string = crypto.randomUUID();
+                const bottomSheetModel: CustomBottomSheetModel = new CustomBottomSheetModel(
+                    <LoginBottomSheetView pk={pk}
+                                          loginSucceed={(pk:string) => {
+                                              console.log("aa 로그인 성공")
+                                              CustomBottomSheetObserver.hideBottomSheet(pk)
+                                          }}
+                                          loginFailed={(pk:string) => {
+                                              console.log("aa 로그인 실패")
+                                              CustomBottomSheetObserver.hideBottomSheet(pk)
+                                          }}
+                    />);
 
+                bottomSheetModel.backgroundColor = "rgb(0, 0, 0, 0.7)";
+                bottomSheetModel.pk = pk;
+                bottomSheetModel.backgroundTouchClose = true;
+                BottomSheetObserver.showBottomSheet(bottomSheetModel);
+            } else {
+                config.headers[HeaderKeys.Authorization] = getCookie("access")
+            }
+        }
         return config;
     },
     (error) => {
