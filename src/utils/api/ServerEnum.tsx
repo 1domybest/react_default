@@ -26,3 +26,7 @@ export enum HTTP_METHOD{
     DELETE = 'DELETE',
 };
 
+export enum TOKEN_EXPIRES {
+    access = 1000 * 60 * 10, // 10분
+};
+

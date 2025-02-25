@@ -28,7 +28,8 @@ const MainView= observer(() => {
     }, []);
 
     return <>
-        메인뷰
+        메인뷰 쿠키
+        { document.cookie }
         <Button onClick={(event) => {
             event.preventDefault()
             vm.current?.snsLogin()
@@ -36,7 +37,12 @@ const MainView= observer(() => {
             로그인!!
         </Button>
 
-
+        <Button onClick={(event) => {
+            event.preventDefault()
+            vm.current?.tokenTest()
+        }}>
+            토큰으로 정보 가져오기
+        </Button>
 
         <Button onClick={(event) => {
             event.preventDefault()

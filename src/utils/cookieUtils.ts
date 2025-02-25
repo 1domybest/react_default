@@ -10,3 +10,5 @@ export const getCookie = (name: string): string | null => {
     }
     return null; // 쿠키가 없을 경우 null 반환
 };
+
+

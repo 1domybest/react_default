@@ -1,9 +1,7 @@
 import {makeAutoObservable} from "mobx";
 import {NavigateFunction} from "react-router";
-import {tokenRefresh} from "../../../../service/AuthAPI.tsx";
-import {ServerConstants} from "../../../../utils/api/ServerEnum.tsx";
-
-
+import {snsTokenRefresh, tokenRefresh} from "../../../../service/AuthAPI.tsx";
+import {ServerConstants, TOKEN_EXPIRES} from "../../../../utils/api/ServerEnum.tsx";
 class LoginBottomSheetViewModel {
     navigate: NavigateFunction | null = null;
     pk: string
@@ -50,11 +48,16 @@ class LoginBottomSheetViewModel {
 
     // SNS 로그인 성공 처리
     async succeedSNSLogin() {
-        console.log("로그인 성공은 함")
+        console.log("로그인 성공은 함 요청한 서버", ServerConstants.SERVER_URL.toString())
         // this.loginSucceed(this.pk)
         await tokenRefresh()
             .then(() => {
-                this.loginSucceed(this.pk)
+                this.loginFailed(this.pk)
+                setTimeout(() => {
+                    console.log("setTimeout 실행됨");
+                    tokenRefresh();
+                }, TOKEN_EXPIRES.access - 1000 * 60); // 9 분 마다 재발급
+
             })
             .catch(error => {
                 this.loginFailed(this.pk)

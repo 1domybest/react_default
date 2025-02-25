@@ -1,7 +1,7 @@
 
 import { makeAutoObservable } from "mobx";
 import { join, login } from "../../../service/MemberAPI.tsx";
-import { needToken, getData, tokenTest } from "../../../service/AuthAPI.tsx";
+import { tokenTest } from "../../../service/AuthAPI.tsx";
 import { NavigateFunction } from "react-router";
 import { CustomBottomSheetModel } from "../../../components/CustomBottomSheetModel.tsx";
 import LoginBottomSheet from "../../../components/bottomSheet/LoginBottomSheet.tsx";
@@ -73,18 +73,7 @@ class MainViewModel {
             console.error("토큰 테스트 실패", error);
         }
     }
-
-    // 인증이 필요한 요청
-    async needToken() {
-        console.log("needToken");
-        try {
-            const data = await needToken();
-            console.log("tokenTest", data);
-        } catch (error) {
-            console.error("토큰 필요 요청 실패", error);
-        }
-    }
-
+    
     // SNS 로그인
     async snsLogin() {
         console.log("SNS 로그인 시작");
@@ -115,17 +104,6 @@ class MainViewModel {
         CustomBottomSheetObserver.hideBottomSheet(pk)
     }
 
-
-
-    // 데이터 가져오기
-    async getData() {
-        try {
-            const data = await getData();
-            console.log("데이터 가져오기 성공", data);
-        } catch (error) {
-            console.error("데이터 가져오기 실패", error);
-        }
-    }
 
     // 바텀 시트 표시
     showBottomSheet() {
