@@ -52,7 +52,7 @@ class LoginBottomSheetViewModel {
         // this.loginSucceed(this.pk)
         await tokenRefresh()
             .then(() => {
-                this.loginFailed(this.pk)
+                this.loginSucceed(this.pk)
                 setTimeout(() => {
                     console.log("setTimeout 실행됨");
                     tokenRefresh();
