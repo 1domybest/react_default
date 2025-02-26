@@ -45,6 +45,22 @@ const LoginBottomSheetView = observer(({ pk, loginSucceed, loginFailed }: Bottom
             }}>
                 네이버 로그인
             </button>
+
+            <button onClick={(event) => {
+                event.preventDefault()
+                vm.current?.snsLogin("google")
+                // window.location.href = `http://localhost:8080/oauth2/authorization/naver`
+            }}>
+                구글 로그인
+            </button>
+
+            <button onClick={(event) => {
+                event.preventDefault()
+                vm.current?.snsLogin("x")
+                // window.location.href = `http://localhost:8080/oauth2/authorization/naver`
+            }}>
+                트위터 로그인
+            </button>
         </div>
 
     </>
