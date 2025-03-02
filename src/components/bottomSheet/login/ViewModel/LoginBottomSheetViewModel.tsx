@@ -43,7 +43,7 @@ class LoginBottomSheetViewModel {
         //     "width=auto,height=auto,top=100,left=100,location=no,resizable=yes,menubar=no,toolbar=no,status=no"
         // );
 
-        window.location.href = `http://localhost:8080/oauth2/authorization/${provider}`;
+        window.location.href = `http://127.0.0.1:8080/oauth2/authorization/${provider}`;
 
         // const checkLoginStatus = setInterval(async () => {
         //     if (loginWindow?.closed) {
