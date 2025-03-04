@@ -15,7 +15,8 @@ export enum HeaderKeys {
 }
 
 export const ServerConstants = {
-    SERVER_URL: import.meta.env.VITE_API_URL
+    SERVER_URL: import.meta.env.VITE_API_URL,
+    ENV: import.meta.env.VITE_ENV
 } as const;
 
 export enum HTTP_METHOD{
