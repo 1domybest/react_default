@@ -31,19 +31,11 @@ class LoginBottomSheetViewModel {
 
     snsLogin(provider: string) {
 
-        // const loginWindow = window.open(
-        //     `${ServerConstants.SERVER_URL}/oauth2/authorization/${provider}`,
-        //     "login",
-        //     "width=auto,height=auto,top=100,left=100,location=no,resizable=yes,menubar=no,toolbar=no,status=no"
-        // );
-
         const loginWindow = window.open(
-            `http://localhost:8080/oauth2/authorization/${provider}`,
+            `${ServerConstants.SERVER_URL}/oauth2/authorization/${provider}`,
             "login",
             "width=auto,height=auto,top=100,left=100,location=no,resizable=yes,menubar=no,toolbar=no,status=no"
         );
-
-        // window.location.href = `http://127.0.0.1:8080/oauth2/authorization/${provider}`;
 
         const checkLoginStatus = setInterval(async () => {
             if (loginWindow?.closed) {
