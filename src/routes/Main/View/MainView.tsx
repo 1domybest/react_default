@@ -15,7 +15,7 @@ const MainView= observer(() => {
     const vm = useRef<MainViewModel | null>(new MainViewModel());
 
     useEffect(() => {
-        console.log("View 마운트", navigate, vm)
+        console.log("View 마운트 ", navigate, vm)
         // vm.current?.init()
         // vm.current?.setNavigate(navigate)
         return () => {
