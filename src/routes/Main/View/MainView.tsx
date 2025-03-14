@@ -28,7 +28,7 @@ const MainView= observer(() => {
     }, []);
 
     return <>
-        메인뷰 쿠키
+        메인뷰 쿠키ㅎㅎㅎㅁㅁ
         { document.cookie }
         <Button onClick={(event) => {
             event.preventDefault()
