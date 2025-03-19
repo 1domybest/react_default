@@ -28,13 +28,13 @@ const MainView= observer(() => {
     }, []);
 
     return <>
-        메인뷰 쿠키ㅎㅎㅎㅁㅁ
+        메인뷰 쿠키ㅎㅎㅎㅁㅁ 이민우
         { document.cookie }
         <Button onClick={(event) => {
             event.preventDefault()
             vm.current?.snsLogin()
         }}>
-            로그인!! 하는 버튼 이민우
+            로그인!! 하는 버튼
         </Button>
 
         <Button onClick={(event) => {
