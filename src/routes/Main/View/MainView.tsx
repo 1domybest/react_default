@@ -34,7 +34,7 @@ const MainView= observer(() => {
             event.preventDefault()
             vm.current?.snsLogin()
         }}>
-            로그인!! 하는 버튼
+            로그인!! 하는 버튼 이민우
         </Button>
 
         <Button onClick={(event) => {
